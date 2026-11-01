@@ -1,6 +1,8 @@
 package com.ivan.animemoder
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,6 +26,7 @@ class AdminActivity : AppCompatActivity() {
         setContentView(R.layout.activity_admin)
 
         val rvPending = findViewById<RecyclerView>(R.id.rvPending)
+        val btnLogout = findViewById<Button>(R.id.btnLogout)
         rvPending.layoutManager = LinearLayoutManager(this)
 
         adapter = VideoAdapter(pendingList,
@@ -31,6 +34,14 @@ class AdminActivity : AppCompatActivity() {
             onReject = { video -> rejectVideo(video) }
         )
         rvPending.adapter = adapter
+
+        // Выход
+        btnLogout.setOnClickListener {
+            val session = SessionManager(this)
+            session.logout()
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        }
 
         loadPending()
     }

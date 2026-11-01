@@ -8,11 +8,19 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
-    // ПАРОЛЬ ДЛЯ ВХОДА (МОЖЕШЬ ПОМЕНЯТЬ ЗДЕСЬ)
-    private val SECRET_PASSWORD = "IvanAdmin2024" 
+    private val SECRET_PASSWORD = "IvanAdmin2024"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Проверяем, входил ли уже админ
+        val session = SessionManager(this)
+        if (session.isLoggedIn()) {
+            startActivity(Intent(this, AdminActivity::class.java))
+            finish()
+            return
+        }
+
         setContentView(R.layout.activity_login)
 
         val etPassword = findViewById<EditText>(R.id.etPassword)
@@ -21,6 +29,7 @@ class MainActivity : AppCompatActivity() {
         btnLogin.setOnClickListener {
             val input = etPassword.text.toString()
             if (input == SECRET_PASSWORD) {
+                session.saveLogin() // СОХРАНЯЕМ ВХОД
                 startActivity(Intent(this, AdminActivity::class.java))
                 finish()
             } else {
