@@ -13,7 +13,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Проверяем, входил ли уже админ
         val session = SessionManager(this)
         if (session.isLoggedIn()) {
             startActivity(Intent(this, AdminActivity::class.java))
@@ -29,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         btnLogin.setOnClickListener {
             val input = etPassword.text.toString()
             if (input == SECRET_PASSWORD) {
-                session.saveLogin() // СОХРАНЯЕМ ВХОД
+                session.saveLogin()
                 startActivity(Intent(this, AdminActivity::class.java))
                 finish()
             } else {
